@@ -29,7 +29,6 @@ local msgTypePrefixes = {
 }
 
 
-
 function Interrupts:LogEvent(event, destName, spellSchool, spellName)
   local msgPrefix, msgString = msgTypePrefixes[event], nil
   local school, schoolColor = spellSchools[spellSchool], spellSchoolColors[spellSchool]
