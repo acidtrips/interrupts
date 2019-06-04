@@ -1,0 +1,6 @@
+## Interface: 80100
+## Title: Interrupts
+## Author: Tuska @ Mal'Ganis-US
+## Notes: Display successful spell interrupts and dispells on-screen
+
+core\addon.xml

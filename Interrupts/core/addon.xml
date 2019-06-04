@@ -1,0 +1,27 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+  <Frame name="Interrupts">
+    <Frames>
+      <MessageFrame parentKey="InterruptMsgFrame" displayDuration="3" fade="true" fadeDuration="1.5" insertMode="TOP" frameStrata="HIGH">
+        <Size x="512" y="60"/>
+        <Anchors>
+          <Anchor point="TOP" relativeTo="UIParent" relativePoint="CENTER" x="0" y="200"/>
+        </Anchors>
+        <FontString inherits="SystemFont_Large" justifyH="CENTER">
+          <Shadow>
+            <Offset x="1.56" y="-1.56"/>
+          </Shadow>
+        </FontString>
+      </MessageFrame>
+    </Frames>
+    <Scripts>
+      <OnLoad>
+        self:SetScript("OnEvent", function(self, event, ...) self[event](self, ...) end)
+        self:RegisterEvent("PLAYER_LOGIN")
+        self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+        self.playerGUID = nil
+      </OnLoad>
+    </Scripts>
+  </Frame>
+  <Script file="addon.lua"/>
+</Ui>
