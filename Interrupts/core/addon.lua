@@ -2,7 +2,7 @@ local UnitGUID, CombatLogGetCurrentEventInfo, format =
       UnitGUID, CombatLogGetCurrentEventInfo, format
 
 
-local spellSchools = {
+local SPELLSCHOOL_TYPE = {
   [1] = "Physical", [2] = "Holy", [3] = "Holy/Physical", [4] = "Fire",
   [5] = "Fire/Physical", [6] = "Fire/Holy", [8] = "Nature", [9] = "Nature/Physical",
   [10] = "Nature/Holy", [12] = "Nature/Fire", [16] = "Frost", [17] = "Frost/Physical",
@@ -14,7 +14,7 @@ local spellSchools = {
 }
 
 
-local spellSchoolColors = {
+local SPELLSCHOOL_COLOR = {
   [1] = "FFFFFF00", [2] = "FFFFE680",
   [4] = "FFFF8000", [8] = "FF4DFF4D",
   [16] = "FF80FFFF", [32] = "FF8080FF",
@@ -22,7 +22,7 @@ local spellSchoolColors = {
 }
 
 
-local msgTypePrefixes = {
+local EVENT_PREFIX = {
   ["SPELL_INTERRUPT"] = "Interrupted",
   ["SPELL_DISPEL"] = "Dispelled",
   ["SPELL_STOLEN"] = "Stole",
@@ -30,12 +30,12 @@ local msgTypePrefixes = {
 
 
 function Interrupts:LogEvent(event, destName, spellSchool, spellName)
-  local msgPrefix, msgString = msgTypePrefixes[event], nil
-  local school, schoolColor = spellSchools[spellSchool], spellSchoolColors[spellSchool]
+  local eventPrefix, msgString = EVENT_PREFIX[event], nil
+  local school, schoolColor = SPELLSCHOOL_TYPE[spellSchool], SPELLSCHOOL_COLOR[spellSchool]
   if ( school and schoolColor ) then
-    msgString = format("%s %s's %s (|c%s%s|r)", msgPrefix, destName, spellName, schoolColor, school)
+    msgString = format("%s %s's %s (|c%s%s|r)", eventPrefix, destName, spellName, schoolColor, school)
   else
-    msgString = format("%s %s's %s", msgPrefix, destName, spellName)
+    msgString = format("%s %s's %s", eventPrefix, destName, spellName)
   end
   self.InterruptMsgFrame:AddMessage(msgString)
 end
@@ -43,7 +43,7 @@ end
 
 function Interrupts:COMBAT_LOG_EVENT_UNFILTERED()
   local _, event, _, sourceGUID, _, _, _, _, destName, _, _, _, _, _, _, extraSpellName, extraSpellSchool = CombatLogGetCurrentEventInfo()
-  if ( sourceGUID ~= self.playerGUID or not msgTypePrefixes[event] ) then
+  if ( sourceGUID ~= self.playerGUID or not EVENT_PREFIX[event] ) then
     return
   end
   self:LogEvent(event, destName, extraSpellSchool, extraSpellName)
